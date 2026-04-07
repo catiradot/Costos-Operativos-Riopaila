@@ -276,12 +276,13 @@ st.markdown("""
 # ══════════════════════════════════════════════════════════════
 
 with st.sidebar:
+    st.image("assets/logo_riopaila.png", use_column_width=True)
     st.markdown("""
     <div style="background:linear-gradient(135deg,#1a472a,#2d6a4f);
-                padding:1rem;border-radius:10px;text-align:center;margin-bottom:0.5rem">
-        <div style="font-size:2rem">🌿</div>
-        <div style="color:white;font-weight:700;font-size:1rem">Riopaila Castilla</div>
-        <div style="color:#b7e4c7;font-size:0.75rem">Analitica de Costos 2021-2026</div>
+                padding:0.5rem;border-radius:0 0 10px 10px;text-align:center;margin-bottom:0.5rem">
+        <div style="color:#b7e4c7;font-size:0.8rem;font-weight:600">
+            Analitica de Costos 2021-2026
+        </div>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
