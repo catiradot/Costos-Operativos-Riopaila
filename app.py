@@ -45,34 +45,43 @@ st.markdown("""
     .main-header h1 { font-size: 2.2rem; margin: 0; font-weight: 700; }
     .main-header p  { font-size: 1rem; margin: 0.5rem 0 0 0; opacity: 0.9; }
     .metric-card {
-        background: white; padding: 1.2rem; border-radius: 10px;
-        border-left: 5px solid #2d6a4f; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        background: #1b4332; padding: 1.2rem; border-radius: 10px;
+        border-left: 5px solid #52b788; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         text-align: center;
     }
-    .metric-card h3 { color: #2d6a4f; font-size: 1.6rem; margin: 0; }
-    .metric-card p  { color: #666; font-size: 0.85rem; margin: 0.3rem 0 0 0; }
+    .metric-card h3 { color: #74c69d; font-size: 1.6rem; margin: 0; }
+    .metric-card p  { color: #b7e4c7; font-size: 0.85rem; margin: 0.3rem 0 0 0; }
     .section-header {
         background: #f0f7f4; padding: 0.8rem 1.2rem; border-radius: 8px;
         border-left: 4px solid #2d6a4f; margin: 1.5rem 0 1rem 0;
     }
     .section-header h3 { color: #1a472a; margin: 0; font-size: 1.1rem; }
     .alert-box {
-        background: #1a472a; padding: 1rem; border-radius: 8px;
-        border-left: 4px solid #52b788; margin: 1rem 0;
-        color: #ffffff;
+        background: #3d2b00; padding: 1rem; border-radius: 8px;
+        border-left: 4px solid #f4a261; margin: 1rem 0; color: #fde8c8;
     }
+    .alert-box b { color: #f4a261; }
     .success-box {
         background: #1b4332; padding: 1rem; border-radius: 8px;
-        border-left: 4px solid #52b788; margin: 1rem 0;
-        color: #ffffff;
+        border-left: 4px solid #52b788; margin: 1rem 0; color: #d8f3dc;
     }
+    .success-box b { color: #74c69d; }
     .info-box {
-        background: #023e8a; padding: 1rem; border-radius: 8px;
-        border-left: 4px solid #48cae4; margin: 1rem 0;
-        color: #ffffff;
+        background: #023047; padding: 1rem; border-radius: 8px;
+        border-left: 4px solid #48cae4; margin: 1rem 0; color: #caf0f8;
     }
+    .info-box b { color: #90e0ef; }
     .stTabs [data-baseweb="tab"] { font-size: 0.95rem; font-weight: 500; }
-    div[data-testid="stSidebarContent"] { background: #f8fffe; }
+    div[data-testid="stSidebarContent"] { background: #0d2818 !important; }
+    div[data-testid="stSidebarContent"] label { color: #b7e4c7 !important; }
+    div[data-testid="stSidebarContent"] .stMarkdown { color: #b7e4c7 !important; }
+    div[data-testid="stSidebarContent"] h3 { color: #52b788 !important; }
+    div[data-testid="stSidebarContent"] .stMetric { background: #1b4332; border-radius: 8px; padding: 0.5rem; }
+    div[data-testid="stSidebarContent"] .stMetricLabel { color: #95d5b2 !important; }
+    div[data-testid="stSidebarContent"] .stMetricValue { color: #ffffff !important; }
+    div[data-testid="stSidebarContent"] hr { border-color: #2d6a4f; }
+    .stMultiSelect span { background: #2d6a4f !important; color: white !important; }
+    .stMultiSelect [data-baseweb="tag"] { background: #2d6a4f !important; color: white !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -107,10 +116,7 @@ def cargar_y_limpiar(archivo):
     cols_drop = ['Source.Name', 'Elemento PEP', 'Orden']
     df.drop(columns=[c for c in cols_drop if c in df.columns], inplace=True)
 
-    # Filtro Tenencia 10/20/30 (decision del grupo)
-    df = df[df['Tenencia'].isin([10, 20, 30])].copy()
-
-    # Labels tenencia
+    # Labels tenencia (SIN filtrar — el filtro se aplica despues para no perder GI03)
     ten_labels = {10: 'Propia Baja', 20: 'Propia Media', 30: 'Propia Alta'}
     df['Tenencia_Label'] = df['Tenencia'].map(ten_labels).fillna('Otra')
 
@@ -270,8 +276,14 @@ st.markdown("""
 # ══════════════════════════════════════════════════════════════
 
 with st.sidebar:
-    st.image("https://via.placeholder.com/280x80/1a472a/ffffff?text=Riopaila+Castilla",
-             use_column_width=True)
+    st.markdown("""
+    <div style="background:linear-gradient(135deg,#1a472a,#2d6a4f);
+                padding:1rem;border-radius:10px;text-align:center;margin-bottom:0.5rem">
+        <div style="font-size:2rem">🌿</div>
+        <div style="color:white;font-weight:700;font-size:1rem">Riopaila Castilla</div>
+        <div style="color:#b7e4c7;font-size:0.75rem">Analitica de Costos 2021-2026</div>
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("### 📂 Cargar Dataset")
     archivo = st.file_uploader(
@@ -285,8 +297,7 @@ with st.sidebar:
     if archivo:
         df_raw = cargar_y_limpiar(archivo)
         anos_disp = sorted(df_raw['Año'].unique().tolist())
-        grupos_disp = sorted(df_raw['GRUPO LABORES'].dropna().unique().tolist())
-        
+        grupos_disp = sorted(df_raw['GRUPO LABORES'].unique().tolist())
 
         anos_sel = st.multiselect(
             "Años a analizar",
@@ -301,7 +312,7 @@ with st.sidebar:
             help="Tipos de labor a incluir"
         )
         if 'Centro' in df_raw.columns:
-            centros_disp = sorted(df_raw['Centro'].unique().tolist())
+            centros_disp = sorted(df_raw['Centro'].dropna().unique().tolist())
             centros_sel  = st.multiselect("Centro operativo", centros_disp, default=centros_disp)
         else:
             centros_sel = []
@@ -317,10 +328,13 @@ with st.sidebar:
 
 # ── Aplicar filtros ───────────────────────────────────────────
 df = df_raw.copy()
-df = df[df['Año'].isin(anos_sel)]
-df = df[df['GRUPO LABORES'].isin(grupos_sel)]
+# Filtro de centro primero (para que GI01 y GI03 sean visibles)
 if centros_sel and 'Centro' in df.columns:
     df = df[df['Centro'].isin(centros_sel)]
+# Luego filtro de tenencia 10/20/30 (decision del grupo)
+df = df[df['Tenencia'].isin([10, 20, 30])].copy()
+df = df[df['Año'].isin(anos_sel)]
+df = df[df['GRUPO LABORES'].isin(grupos_sel)]
 
 if len(df) == 0:
     st.error("No hay datos con los filtros seleccionados. Ajusta los filtros del sidebar.")
@@ -1309,15 +1323,11 @@ with tab7:
             title=f'Proyeccion de Costos — {grupo_proy} ({meses_proy} meses)',
             labels={'Costo_Estimado': 'Costo Promedio por Labor ($)', 'Fecha': ''}
         )
-        fig_proy.add_trace(go.Scatter(
-            x=[pd.Timestamp(f'{df["Año"].max()}-12-01'),
-            pd.Timestamp(f'{df["Año"].max()}-12-01')],
-            y=[0, df_combined['Costo_Estimado'].max()],
-            mode='lines',
-            line=dict(color='gray', dash='dash', width=1.5),
-            name='Inicio proyeccion',
-            showlegend=True
-        ))
+        fig_proy.add_vline(
+            x=pd.Timestamp(f'{df["Año"].max()}-12-01'),
+            line_dash='dash', line_color='gray',
+            annotation_text='Inicio proyeccion'
+        )
         fig_proy.update_layout(height=400)
         st.plotly_chart(fig_proy, use_container_width=True)
 
