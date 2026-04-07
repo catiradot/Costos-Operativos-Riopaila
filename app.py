@@ -297,7 +297,7 @@ with st.sidebar:
     if archivo:
         df_raw = cargar_y_limpiar(archivo)
         anos_disp = sorted(df_raw['Año'].unique().tolist())
-        grupos_disp = sorted(df_raw['GRUPO LABORES'].unique().tolist())
+        grupos_disp = sorted(df_raw['GRUPO LABORES'].dropna().unique().tolist())
 
         anos_sel = st.multiselect(
             "Años a analizar",
@@ -1323,11 +1323,16 @@ with tab7:
             title=f'Proyeccion de Costos — {grupo_proy} ({meses_proy} meses)',
             labels={'Costo_Estimado': 'Costo Promedio por Labor ($)', 'Fecha': ''}
         )
-        fig_proy.add_vline(
-            x=pd.Timestamp(f'{df["Año"].max()}-12-01'),
-            line_dash='dash', line_color='gray',
-            annotation_text='Inicio proyeccion'
-        )
+        
+        fig_proy.add_trace(go.Scatter(
+            x=[pd.Timestamp(f'{df["Año"].max()}-12-01'),
+            pd.Timestamp(f'{df["Año"].max()}-12-01')],
+            y=[0, df_combined['Costo_Estimado'].max()],
+            mode='lines',
+            line=dict(color='gray', dash='dash', width=1.5),
+            name='Inicio proyeccion',
+            showlegend=True
+        ))
         fig_proy.update_layout(height=400)
         st.plotly_chart(fig_proy, use_container_width=True)
 
