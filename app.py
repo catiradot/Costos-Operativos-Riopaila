@@ -57,16 +57,19 @@ st.markdown("""
     }
     .section-header h3 { color: #1a472a; margin: 0; font-size: 1.1rem; }
     .alert-box {
-        background: #fff3cd; padding: 1rem; border-radius: 8px;
-        border-left: 4px solid #ffc107; margin: 1rem 0;
+        background: #1a472a; padding: 1rem; border-radius: 8px;
+        border-left: 4px solid #52b788; margin: 1rem 0;
+        color: #ffffff;
     }
     .success-box {
-        background: #d4edda; padding: 1rem; border-radius: 8px;
-        border-left: 4px solid #28a745; margin: 1rem 0;
+        background: #1b4332; padding: 1rem; border-radius: 8px;
+        border-left: 4px solid #52b788; margin: 1rem 0;
+        color: #ffffff;
     }
     .info-box {
-        background: #d1ecf1; padding: 1rem; border-radius: 8px;
-        border-left: 4px solid #17a2b8; margin: 1rem 0;
+        background: #023e8a; padding: 1rem; border-radius: 8px;
+        border-left: 4px solid #48cae4; margin: 1rem 0;
+        color: #ffffff;
     }
     .stTabs [data-baseweb="tab"] { font-size: 0.95rem; font-weight: 500; }
     div[data-testid="stSidebarContent"] { background: #f8fffe; }
@@ -1307,7 +1310,7 @@ with tab7:
             labels={'Costo_Estimado': 'Costo Promedio por Labor ($)', 'Fecha': ''}
         )
         fig_proy.add_vline(
-            x=pd.Timestamp(f'{df["Año"].max()}-12-01'),
+            x=str(pd.Timestamp(f'{df["Año"].max()}-12-01')),
             line_dash='dash', line_color='gray',
             annotation_text='Inicio proyeccion'
         )
