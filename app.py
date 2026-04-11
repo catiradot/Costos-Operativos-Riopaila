@@ -1141,12 +1141,18 @@ with tab5:
 | Metrica | Que significa para Riopaila |
 |---|---|
 | **Accuracy ~77%** | De 100 labores evaluadas, el modelo acierta en ~77 |
+| **Precision ~49%** | De las labores que el modelo alerta como costosas, el 49% realmente lo son |
 | **Recall ~85%** | Detecta el 85% de las labores que REALMENTE seran costosas |
+| **F1 Score ~62%** | Balance entre Precision y Recall — util cuando las clases estan desbalanceadas |
 | **AUC-ROC ~0.84** | Discrimina bien entre costosas y normales (1.0 = perfecto) |
 
 > **Por que el Recall es la metrica mas importante:**
 > Es mejor sobre-alertar (falso positivo) que perder una labor costosa (falso negativo).
 > Un recall alto significa que el sistema de alertas tempranas funcionara correctamente.
+                    
+> **F1 Score:** Combina Precision y Recall en una sola métrica. 
+> Un F1 de 62% indica un balance aceptable considerando que las labores 
+> costosas son minoría en el dataset (25% del total por definición del P75).
 
 > **Como usar en la practica:** Antes de programar una labor, el gerente ingresa tipo de labor,
 > mes, cantidad estimada y tenencia. Si el modelo devuelve **"Costosa"**, se activa una revision
